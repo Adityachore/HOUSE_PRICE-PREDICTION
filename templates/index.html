@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePricer AI | Intelligent Property Valuation</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #686ae4;
+            /* Indigo */
+            --primary-dark: #4f46e5;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #e1e2e4;
+            --border: #e2e8f0;
+            --input-bg: #ffffff;
+            --accent: #f5f3ff;
+            --success-bg: #ecfdf5;
+            --success-text: #059669;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.7)),
+            url("{{ url_for('static', filename='download.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 20px 10px;
+            min-height: 100vh;
+        }
+
+        .header-top {
+            max-width: 900px;
+            margin: 0 auto 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-box {
+            background: var(--primary);
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.4);
+        }
+
+        .logo-text h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-text p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .hero h1 {
+            font-size: 2.75rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.03em;
+            color: #76bfca;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            padding: 40px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .section-header i {
+            color: var(--primary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 4px;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #475569;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border);
+            background: var(--input-bg);
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.2s;
+            color: #1e293b;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .checkbox-row {
+            grid-column: span 2;
+            display: flex;
+            gap: 32px;
+            margin-top: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            color: #475569;
+        }
+
+        .checkbox-item input {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 16px;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .result-container {
+            margin-top: 32px;
+            background: var(--accent);
+            border: 2px dashed #c4b5fd;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            display: none;
+            animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #3730a3;
+        }
+
+        .loader {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3.5px solid rgba(255, 255, 255, 0.25);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-row,
+            .full-width {
+                grid-column: span 1;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <img src="download.jpg" alt="house">
+    <header class="header-top">
+        <div class="logo-box"><i data-lucide="home"></i></div>
+        <div class="logo-text">
+            <h2>HomePricer AI</h2>
+            <p>Predictive Real Estate Insights</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Discover Your Home's True Value</h1>
+            <p>Instant, algorithmic bank-grade property valuations based on real-time market data across 1,400+
+                listings.</p>
+        </section>
+
+        <div class="card">
+            <div class="section-header">
+                <i data-lucide="activity"></i>
+                <h3>Property Details</h3>
+            </div>
+
+            <div class="grid">
+                <div class="form-group">
+                    <label for="area"><i data-lucide="maximize"></i> Living Area (sq ft)</label>
+                    <input type="number" id="area" placeholder="e.g. 2000" value="1800">
+                </div>
+
+                <div class="form-group">
+                    <label for="bedrooms"><i data-lucide="bed"></i> Bedrooms</label>
+                    <input type="number" id="bedrooms" placeholder="e.g. 3" value="3">
+                </div>
+
+                <div class="form-group">
+                    <label for="bathrooms"><i data-lucide="bath"></i> Bathrooms</label>
+                    <input type="number" id="bathrooms" placeholder="e.g. 2.5" value="2">
+                </div>
+
+                <div class="form-group">
+                    <label for="yearBuilt"><i data-lucide="calendar"></i> Year Built</label>
+                    <input type="number" id="yearBuilt" placeholder="e.g. 2005" value="1995">
+                </div>
+
+                <div class="form-group">
+                    <label for="lotArea"><i data-lucide="map"></i> Lot Size (sq ft)</label>
+                    <input type="number" id="lotArea" placeholder="e.g. 7500" value="8000">
+                </div>
+
+                <div class="form-group">
+                    <label for="location"><i data-lucide="map-pin"></i> Location Type</label>
+                    <select id="location">
+                        <option value="RL" selected>Residential Low Density</option>
+                        <option value="RM">Residential Medium Density</option>
+                        <option value="FV">Floating Village Residential</option>
+                        <option value="RH">Residential High Density</option>
+                        <option value="C (all)">Commercial Zone</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="condition"><i data-lucide="sparkles"></i> Property Exterior Quality</label>
+                    <select id="condition">
+                        <option value="4">Excellent (Pristine)</option>
+                        <option value="3">Good (Above Average)</option>
+                        <option value="2" selected>Average / Typical</option>
+                        <option value="1">Fair (Minor Issues)</option>
+                        <option value="0">Poor (Major Repairs)</option>
+                    </select>
+                </div>
+
+                <div class="checkbox-row">
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="garage" checked> Has Attached Garage
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="pool"> Has Swimming Pool
+                    </label>
+                </div>
+
+                <div class="full-width">
+                    <button class="btn-primary" onclick="predictPrice()">
+                        <span id="btn-text">Calculate Estimated Value</span>
+                        <div id="loader" class="loader"></div>
+                    </button>
+                </div>
+            </div>
+
+            <div id="result-container" class="result-container">
+                <div class="result-label">Market Valuation</div>
+                <div class="result-value" id="result-price">$0.00</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        async function predictPrice() {
+            const btn = document.querySelector(".btn-primary");
+            const btnText = document.getElementById("btn-text");
+            const loader = document.getElementById("loader");
+            const resultBox = document.getElementById("result-container");
+            const resultPrice = document.getElementById("result-price");
+
+            btn.disabled = true;
+            btnText.style.display = 'none';
+            loader.style.display = 'block';
+            resultBox.style.display = 'none';
+
+            const payload = {
+                area: parseFloat(document.getElementById("area").value),
+                bedrooms: parseInt(document.getElementById("bedrooms").value),
+                bathrooms: parseFloat(document.getElementById("bathrooms").value),
+                yearBuilt: parseInt(document.getElementById("yearBuilt").value),
+                lotArea: parseFloat(document.getElementById("lotArea").value),
+                location: document.getElementById("location").value,
+                condition_score: parseInt(document.getElementById("condition").value),
+                hasGarage: document.getElementById("garage").checked,
+                hasPool: document.getElementById("pool").checked
+            };
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Premium simulation delay
+                    setTimeout(() => {
+                        resultPrice.innerText = new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                            maximumFractionDigits: 0
+                        }).format(data.predicted_price);
+
+                        resultBox.style.display = 'block';
+                        btn.disabled = false;
+                        btnText.style.display = 'block';
+                        loader.style.display = 'none';
+                    }, 600);
+                } else {
+                    alert("Model Error: " + data.error);
+                    resetLoading();
+                }
+            } catch (e) {
+                alert("Connection lost. Please ensure the backend server is running.");
+                resetLoading();
+            }
+
+            function resetLoading() {
+                btn.disabled = false;
+                btnText.style.display = 'block';
+                loader.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>
